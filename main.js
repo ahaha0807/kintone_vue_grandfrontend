@@ -18,16 +18,20 @@ let xhrGet = (url, data) => {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url);
   xhr.onload = () => {
-    if (xhr.status === 404) {
-      // TODO: 検索結果が見つかりませんでしたの表示
+    if (xhr.status === 429) {
+      // TODO: API 利用制限の表示
     } else {
-      if (xhr.status === 200) {
-          // success
-          data.searchData = JSON.parse(xhr.responseText);
-          data.searchData = data.searchData.hotels;
+      if (xhr.status === 404) {
+        // TODO: 検索結果が見つかりませんでしたの表示
       } else {
-          // error
-          data.searchData = JSON.parse(xhr.responseText);
+        if (xhr.status === 200) {
+            // success
+            data.searchData = JSON.parse(xhr.responseText);
+            data.searchData = data.searchData.hotels;
+        } else {
+            // error
+            data.searchData = JSON.parse(xhr.responseText);
+        }
       }
     }
   }
@@ -36,8 +40,32 @@ let xhrGet = (url, data) => {
 
 let searchHotels = (_this) => {
   searchRequest(_this);
-  // var hotels = data.hotels; //hotels => array
-  // _this.hotels = hotels;
+}
+
+let kintonePost = (selectHotel) => {
+  console.log(selectHotel);
+  var hotelData = dataAjustment(selectHotel);
+  console.log(hotelData);
+}
+
+let dataAjustment = (rawData) => {
+  var retData = {
+    name: "",
+    infoUrl: "",
+    minCharge: "",
+    station: "",
+    access: "",
+    propment: ""
+  }
+  rawData = rawData.hotel[0].hotelBasicInfo;
+
+  retData.name = rawData.hotelName;
+  retData.infoUrl = rawData.hotelInformationUrl;
+  retData.minCharge = rawData.hotelMinCharge;
+  retData.station = rawData.nearestStation;
+  retData.access = rawData.access;
+
+  return retData;
 }
 
 var inputData = new Vue(
@@ -105,7 +133,8 @@ var inputData = new Vue(
     searchData: []
   },
     methods: {
-      request: function(event){ searchHotels(this); }
+      request: function(event){ searchHotels(this); },
+      kintonePost: function(hotelData) { kintonePost(hotelData); }
     }
   }
 )

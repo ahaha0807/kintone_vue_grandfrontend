@@ -34,13 +34,11 @@
           <span class="hotelInfoUrl"><a href="{{ hotelData.hotel[0].hotelBasicInfo.hotelInformationUrl }}" target="_blank">ホテル詳細</a></span>
           <span class="hotelMinCharge">最安値： {{ "￥" + hotelData.hotel[0].hotelBasicInfo.hotelMinCharge }}</span>
           <span class="nearestStation">最寄り駅： {{ hotelData.hotel[0].hotelBasicInfo.nearestStation}}</span>
+          <span class="access">アクセス： {{ hotelData.hotel[0].hotelBasicInfo.access}}</span>
           <button @click="kintonePost(hotelData)" name="kintonePost">候補登録</button>
         </li>
       </ul>
     </div>
-
-
-
 
     <script type="text/javascript" src="./vue.js"></script>
     <script type="text/javascript" src="./jquery-3.1.0.min .js"></script>
