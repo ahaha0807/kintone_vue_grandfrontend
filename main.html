@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>宿検索</title>
+  </head>
+  <body>
+    <!-- <div id="app">
+      <p>{{ massage }}</p>
+      <input v-model="massage">
+    </div> -->
+
+    <div id="input">
+      <label for="pref">都道府県</label>
+      <select name="pref" v-model="pref">
+        <option value="default" selected>指定なし</option>
+        <option v-for="pref in prefOps" v-bind:value="pref.slug">
+          {{ pref.label }}
+        </option>
+      </select>
+      <label for="keyword">検索ワード</label>
+      <input name="keyword" v-model="keyword">
+      <label for="order">並び順</label>
+      <select name="order" v-model="order">
+        <option value="standard" selected>施設番号順</option>
+        <option v-for="order in orders" v-bind:value="order.value">
+          {{ order.label }}
+        </option>
+      </select>
+      <button @click=request>検索</button>
+      <ul>
+        <li v-for="hotelData in searchData">
+          <span class="hotelName">{{ hotelData.hotel[0].hotelBasicInfo.hotelName }}</span>
+          <span class="hotelInfoUrl"><a href="{{ hotelData.hotel[0].hotelBasicInfo.hotelInformationUrl }}" target="_blank">ホテル詳細</a></span>
+        </li>
+      </ul>
+    </div>
+
+
+
+
+    <script type="text/javascript" src="./vue.js"></script>
+    <script type="text/javascript" src="./jquery-3.1.0.min .js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+  </body>
+</html>
