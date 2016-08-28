@@ -11,18 +11,20 @@ let searchRequest = (data) => {
   params += "&keyword=" + encodeURI(data.keyword);
   params += "&sort=" + data.order;
 
-  return xhrGet(src + apiKey + params, data);
+  return rakutenGet(src + apiKey + params, data);
 }
 
-let xhrGet = (url, data) => {
+let rakutenGet = (url, data) => {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url);
   xhr.onload = () => {
     if (xhr.status === 429) {
       // TODO: API 利用制限の表示
+      alert("申し訳ございません。APIの使用制限で検索できません。しばらくしてからお試しください。");
     } else {
       if (xhr.status === 404) {
         // TODO: 検索結果が見つかりませんでしたの表示
+        alert("検索結果が見つかりませんでした");
       } else {
         if (xhr.status === 200) {
             // success
@@ -42,13 +44,21 @@ let searchHotels = (_this) => {
   searchRequest(_this);
 }
 
-let kintonePost = (selectHotel) => {
-  console.log(selectHotel);
-  var hotelData = dataAjustment(selectHotel);
-  console.log(hotelData);
+let kintonePost = (selectHotel, data) => {
+  // console.log(selectHotel);
+  var hotelData = dataAjustment(selectHotel, data);
+  // console.log(hotelData);
+
+  // TODO: hotelDataをもってkintoneに登録する
+  var src = "https://mfd6z.cybozu.com/k/v1/"
+  var target = "record.json"
+  hotelData = kintoneDataParce(hotelData, 6);
+  kintoneXhr(src + target, hotelData);
+
 }
 
-let dataAjustment = (rawData) => {
+let dataAjustment = (rawData, propment) => {
+  rawData = rawData.hotel[0].hotelBasicInfo;
   var retData = {
     name: "",
     infoUrl: "",
@@ -57,7 +67,6 @@ let dataAjustment = (rawData) => {
     access: "",
     propment: ""
   }
-  rawData = rawData.hotel[0].hotelBasicInfo;
 
   retData.name = rawData.hotelName;
   retData.infoUrl = rawData.hotelInformationUrl;
@@ -65,7 +74,86 @@ let dataAjustment = (rawData) => {
   retData.station = rawData.nearestStation;
   retData.access = rawData.access;
 
+  retData.propment = propment.propment;
+
   return retData;
+}
+
+let kintoneDataParce = (hotelData, appId) => {
+  var retData = {
+    "app": 0,
+    "record": {
+      "hotelName": {
+        "value": ""
+      },
+      "hotelCharge": {
+        "value": ""
+      },
+      "hotelDetail": {
+        "value": ""
+      },
+      "nearestStation": {
+        "value": ""
+      },
+      "access": {
+        "value": ""
+      },
+      "propment": {
+        "value": ""
+      }
+    }
+  }
+  retData.app = appId;
+  retData.record.hotelName.value = hotelData.name;
+  retData.record.hotelCharge.value = hotelData.minCharge;
+  retData.record.hotelDetail.value = hotelData.infoUrl;
+  retData.record.nearestStation.value = hotelData.station;
+  retData.record.access.value = hotelData.access;
+  retData.record.propment.value = hotelData.propment;
+
+  // console.log(retData);
+  return retData;
+}
+
+let kintoneXhr = (url, _data) => {
+  var phpUrl = "./post.php";
+
+  $.ajax({
+    type: "POST",
+    url: phpUrl,
+    data: _data
+  }).done(function(msg){
+    // console.log(msg);
+    document.querySelector('#data')
+  }).fail(function(msg){
+    // console.log(msg);
+  });
+
+
+
+
+  // var xhr = new XMLHttpRequest();
+  // data = JSON.stringify(data);
+  // xhr.open('POST', phpUrl);
+  // xhr.onload = () => {
+  //   if (xhr.status === 429) {
+  //     // TODO: API 利用制限の表示
+  //   } else {
+  //     if (xhr.status === 404) {
+  //       // TODO: 検索結果が見つかりませんでしたの表示
+  //     } else {
+  //       if (xhr.status === 200) {
+  //           // success
+  //           console.log(xhr.responseText);
+  //       } else {
+  //           // error
+  //           console.log(xhr.responseText);
+  //       }
+  //     }
+  //   }
+  // }
+  // xhr.send(data);
+
 }
 
 var inputData = new Vue(
@@ -76,6 +164,7 @@ var inputData = new Vue(
       city: "",
       type: "",
       order: "",
+      propment: "",
       hotels: [],
       prefOps: [
         {"label": "北海道","slug": "hokkaido"},
@@ -134,7 +223,7 @@ var inputData = new Vue(
   },
     methods: {
       request: function(event){ searchHotels(this); },
-      kintonePost: function(hotelData) { kintonePost(hotelData); }
+      kintonePost: function(hotelData) { kintonePost(hotelData, this); }
     }
   }
 )
