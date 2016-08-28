@@ -45,16 +45,19 @@ let searchHotels = (_this) => {
 }
 
 let kintonePost = (selectHotel, data) => {
-  // console.log(selectHotel);
-  var hotelData = dataAjustment(selectHotel, data);
-  // console.log(hotelData);
+  if(document.querySelector("#propment").value != "") {
+    // console.log(selectHotel);
+    var hotelData = dataAjustment(selectHotel, data);
+    // console.log(hotelData);
 
-  // TODO: hotelDataをもってkintoneに登録する
-  var src = "https://mfd6z.cybozu.com/k/v1/"
-  var target = "record.json"
-  hotelData = kintoneDataParce(hotelData, 6);
-  kintoneXhr(src + target, hotelData);
-
+    // TODO: hotelDataをもってkintoneに登録する
+    var src = "https://mfd6z.cybozu.com/k/v1/"
+    var target = "record.json"
+    hotelData = kintoneDataParce(hotelData, 6);
+    kintoneXhr(src + target, hotelData);
+  } else {
+    alert("提案者名を入力してください")
+  }
 }
 
 let dataAjustment = (rawData, propment) => {
@@ -124,7 +127,7 @@ let kintoneXhr = (url, _data) => {
     data: _data
   }).done(function(msg){
     // console.log(msg);
-    document.querySelector('#data')
+    alert("候補に登録しました")
   }).fail(function(msg){
     // console.log(msg);
   });

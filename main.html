@@ -31,7 +31,7 @@
         </select>
         <button id="search" @click="request">検索</button>
         <label for="propment">提案者名</label>
-        <input name="propment" v-model="propment">
+        <input id="propment" name="propment" v-model="propment">
       </div>
       <ul id="hotelData">
         <li class="hotelData" v-for="hotelData in searchData">

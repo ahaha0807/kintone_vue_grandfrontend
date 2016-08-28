@@ -15,16 +15,23 @@ html, body, li, ul {
   top: 0;
   z-index: 10;
 }
-#searchForm input {
-  font-size: 150%;
+#searchForm input, #searchForm select {
+  font-size: 130%;
 }
 #searchForm label {
   color: #fff;
+  font-size: 130%;
 }
 
+#search {
+  font-size: 130%;
+  padding: 0 1%;
+}
 
 #hotelData {
   list-style-type: none;
+  position: relative;
+  top: 5em;  
 }
 
 .hotelData {
