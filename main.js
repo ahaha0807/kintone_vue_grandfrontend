@@ -1,10 +1,8 @@
 let searchRequest = (data) => {
-  // console.log(data.pref);
   var src = "https://app.rakuten.co.jp/services/api/Travel/KeywordHotelSearch/20131024";
   var apiKey = "?applicationId=1071125400556730362";
   var params = "";
 
-  // params += "&largeClassCode=japan";
   if(data.pref !== "default"){
     params += "&middleClassCode=" + data.pref;
   }
@@ -19,11 +17,9 @@ let rakutenGet = (url, data) => {
   xhr.open('GET', url);
   xhr.onload = () => {
     if (xhr.status === 429) {
-      // TODO: API 利用制限の表示
       alert("申し訳ございません。APIの使用制限で検索できません。しばらくしてからお試しください。");
     } else {
       if (xhr.status === 404) {
-        // TODO: 検索結果が見つかりませんでしたの表示
         alert("検索結果が見つかりませんでした");
       } else {
         if (xhr.status === 200) {
@@ -48,15 +44,12 @@ let kintonePost = (selectHotel, data) => {
   if(document.querySelector("#propment").value != "") {
     // console.log(selectHotel);
     var hotelData = dataAjustment(selectHotel, data);
-    // console.log(hotelData);
-
-    // TODO: hotelDataをもってkintoneに登録する
     var src = "https://mfd6z.cybozu.com/k/v1/"
     var target = "record.json"
     hotelData = kintoneDataParce(hotelData, 6);
     kintoneXhr(src + target, hotelData);
   } else {
-    alert("提案者名を入力してください")
+    alert("提案者名を入力してください");
   }
 }
 
@@ -113,8 +106,6 @@ let kintoneDataParce = (hotelData, appId) => {
   retData.record.nearestStation.value = hotelData.station;
   retData.record.access.value = hotelData.access;
   retData.record.propment.value = hotelData.propment;
-
-  // console.log(retData);
   return retData;
 }
 
@@ -126,37 +117,11 @@ let kintoneXhr = (url, _data) => {
     url: phpUrl,
     data: _data
   }).done(function(msg){
-    // console.log(msg);
-    alert("候補に登録しました")
+    alert("候補に登録しました");
   }).fail(function(msg){
-    // console.log(msg);
+    //error
+    alert("登録に失敗しました");
   });
-
-
-
-
-  // var xhr = new XMLHttpRequest();
-  // data = JSON.stringify(data);
-  // xhr.open('POST', phpUrl);
-  // xhr.onload = () => {
-  //   if (xhr.status === 429) {
-  //     // TODO: API 利用制限の表示
-  //   } else {
-  //     if (xhr.status === 404) {
-  //       // TODO: 検索結果が見つかりませんでしたの表示
-  //     } else {
-  //       if (xhr.status === 200) {
-  //           // success
-  //           console.log(xhr.responseText);
-  //       } else {
-  //           // error
-  //           console.log(xhr.responseText);
-  //       }
-  //     }
-  //   }
-  // }
-  // xhr.send(data);
-
 }
 
 var inputData = new Vue(
@@ -230,50 +195,3 @@ var inputData = new Vue(
     }
   }
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-// let logRend = () => {
-//   console.log(inputData.place);
-// }
-//
-// let preDataRendering = () => {
-//   var data = getPreName();
-//   // var jpData = data.areaClasses.largeClasses[0].largeClass[0].middleClasses[0];
-//   console.log(data);
-// }
-//
-// let getPreName = () => {
-//   var prefData;
-//   var src = "https://app.rakuten.co.jp/services/api/Travel/GetAreaClass/20131024";
-//   var apiKey = "?applicationId=1071125400556730362";
-//   var xhr = new XMLHttpRequest();
-//   xhr.open('GET', src + apiKey);
-//   xhr.onload = () => {
-//     if (xhr.status === 200) {
-//         // success
-//         prefData = JSON.parse(xhr.responseText);
-//     } else {
-//         // error
-//         prefData = JSON.parse(xhr.responseText);
-//     }
-//   }
-//   xhr.send();
-//
-//   // $.getJSON("./prefData.json" , (data) => {
-//   //   var len = data.length;
-//   //   prefData = data;
-//   // });
-//
-//   return prefData;
-// }
