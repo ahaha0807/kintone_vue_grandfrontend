@@ -1,6 +1,6 @@
 let searchRequest = (data) => {
   var src = "https://app.rakuten.co.jp/services/api/Travel/KeywordHotelSearch/20131024";
-  var apiKey = "?applicationId=1071125400556730362";
+  var apiKey = "?applicationId=1071125400556730362"; // 無効化済み
   var params = "";
 
   if(data.pref !== "default"){
