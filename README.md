@@ -28,6 +28,7 @@ https://ahaha0807.github.io/grandfrontend_2016/main.html
 4. 検索結果が表示される
 
 ・表示されている「ホテル詳細」をクリックすると楽天のページに遷移し、ホテルの詳細情報を確認することができる
+![](https://github.com/ahaha0807/kintone_vue_grandfrontend/blob/master/etc/readme_images/search.png)
 
 == 宿の候補を登録する ==
 
@@ -35,11 +36,14 @@ https://ahaha0807.github.io/grandfrontend_2016/main.html
 2. 上記の「候補を調べる」を実行する
 3. 表示されている「候補登録」ボタンをクリックする
 4. kintone 側にレコードとして宿の情報・提案者の名前が登録される
+![](https://github.com/ahaha0807/kintone_vue_grandfrontend/blob/master/etc/readme_images/regist.png)
 
 == 宿について話し合う ==
 1. 登録先の kintone にアクセスし、情報を登録しているアプリにアクセスする
 2. 候補のレコードを選択し、コメント部分を開く
 3. コメントを書き込む
+![](https://github.com/ahaha0807/kintone_vue_grandfrontend/blob/master/etc/readme_images/list.png)
+![](https://github.com/ahaha0807/kintone_vue_grandfrontend/blob/master/etc/readme_images/comunication.png)
 
 ## 実装したい機能
 
